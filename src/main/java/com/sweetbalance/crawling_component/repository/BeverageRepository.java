@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface BeverageRepository extends JpaRepository<Beverage, Long> {
 
     Optional<Beverage> findByName(String username);
+
+    Optional<Beverage> findByNameAndBrand(String name, String brand);
 }
