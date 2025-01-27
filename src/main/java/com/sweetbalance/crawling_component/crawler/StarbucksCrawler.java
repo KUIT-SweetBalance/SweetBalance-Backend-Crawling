@@ -26,11 +26,6 @@ public class StarbucksCrawler extends BaseCrawler {
     @Value("${spring.selenium.base-url.starbucks.view}")
     private String VIEW_URL;
 
-    @Autowired
-    public StarbucksCrawler(WebDriver driver) {
-        super(driver);
-    }
-
     @Override
     public List<Beverage> crawlBeverageList() {
         List<Beverage> results = new ArrayList<>();
@@ -48,12 +43,11 @@ public class StarbucksCrawler extends BaseCrawler {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            quitDriver();
         }
         return results;
     }
 
+    // BASE 페이지에서 각각의 음료에 해당하는 prod 값 얻어와서 리스트 반환
     private List<String> extractProdNumbers(WebDriverWait wait) {
         List<String> prodNumbers = new ArrayList<>();
         WebElement productList = wait.until(ExpectedConditions.presenceOfElementLocated(
@@ -74,6 +68,7 @@ public class StarbucksCrawler extends BaseCrawler {
         return prodNumbers;
     }
 
+    // prod 값 각각에 해당하는 URL 이동, 해당 음료의 데이터 크롤링
     private Beverage crawlBeverageDetail(String prodNumber) {
         try {
             navigateTo(VIEW_URL + "?product_cd=" + prodNumber);
@@ -88,25 +83,22 @@ public class StarbucksCrawler extends BaseCrawler {
             String fullName = productViewWrap.findElement(By.tagName("h4")).getText();
             String name = fullName.split("\n")[0].trim();
 
-            System.out.println("### 가져온 음료 데이터 이름: "+name);
-
             String sizeInfo = productViewWrap.findElement(By.id("product_info01"))
                     .findElement(By.tagName("b")).getAttribute("textContent");
+
             int volume = parseVolume(sizeInfo);
-
             if(volume == 887) name+="(TRENTA)";
-
-            System.out.println("    가져온 음료 데이터 용량: "+volume);
 
             WebElement nutritionInfo = productViewWrap.findElement(By.className("product_info_content"));
             double calories = parseNutritionValue(nutritionInfo, "kcal", volume);
             double sugar = parseNutritionValue(nutritionInfo, "sugars", volume);
             double caffeine = parseNutritionValue(nutritionInfo, "caffeine", volume);
 
-            // 영양 정보 파싱 중 예외가 발생하면 null을 반환
             if (calories == -1 || sugar == -1 || caffeine == -1) {
                 return null;
             }
+
+            System.out.println("### 추출 음료: 스타벅스 || "+name);
 ;
             Beverage beverage = Beverage.builder()
                     .name(name)
@@ -116,6 +108,7 @@ public class StarbucksCrawler extends BaseCrawler {
                     .calories(calories)
                     .sugar(sugar)
                     .caffeine(caffeine)
+                    .consumeCount(0)
                     .status(Status.ACTIVE)
                     .build();
 
@@ -128,6 +121,7 @@ public class StarbucksCrawler extends BaseCrawler {
         }
     }
 
+    // volume 값을 통해 BeverageSize 설정
     private void createBeverageSizes(Beverage beverage, int volume) {
         switch (volume) {
             case 22:
@@ -161,11 +155,13 @@ public class StarbucksCrawler extends BaseCrawler {
         }
     }
 
-    private String extractCategory(WebDriverWait wait) {
-        WebElement categoryElement = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("/html/body/div[3]/div[7]/div[1]/div/ul/li[7]/a")
-        ));
-        return categoryElement.getAttribute("textContent");
+    private int parseVolume(String sizeInfo) {
+        try {
+            return Integer.parseInt(sizeInfo.replaceAll("[^0-9]", ""));
+        } catch (Exception e) {
+            System.err.println("Error parsing volume: " + e.getMessage() + ", 기본값 355ml 적용");
+            return 355;
+        }
     }
 
     private double parseNutritionValue(WebElement nutritionInfo, String nutrientClass, int volume) {
@@ -179,17 +175,14 @@ public class StarbucksCrawler extends BaseCrawler {
         }
     }
 
-    private int parseVolume(String sizeInfo) {
-        try {
-            return Integer.parseInt(sizeInfo.replaceAll("[^0-9]", ""));
-        } catch (Exception e) {
-            System.err.println("Error parsing volume: " + e.getMessage() + ", 기본값 355ml 적용");
-            return 355;
-        }
+    private String extractCategory(WebDriverWait wait) {
+        WebElement categoryElement = wait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("/html/body/div[3]/div[7]/div[1]/div/ul/li[7]/a")
+        ));
+        return categoryElement.getAttribute("textContent");
     }
 
     private BeverageCategory determineBeverageCategory(String category, String name) {
-        category = category.toLowerCase();
         if (category.contains("콜드 브루")) {
             return BeverageCategory.콜드브루;
         } else if (category.contains("브루드")) {

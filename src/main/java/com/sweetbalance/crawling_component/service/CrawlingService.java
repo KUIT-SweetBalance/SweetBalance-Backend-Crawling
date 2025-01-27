@@ -1,9 +1,13 @@
 package com.sweetbalance.crawling_component.service;
 
+import com.sweetbalance.crawling_component.crawler.MegaCrawler;
+import com.sweetbalance.crawling_component.crawler.PaikCrawler;
 import com.sweetbalance.crawling_component.crawler.StarbucksCrawler;
 import com.sweetbalance.crawling_component.entity.Beverage;
 import com.sweetbalance.crawling_component.entity.BeverageSize;
 import com.sweetbalance.crawling_component.repository.BeverageRepository;
+import jakarta.transaction.Transactional;
+import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,36 +17,58 @@ import java.util.Optional;
 @Service
 public class CrawlingService {
 
+    private final WebDriverService webDriverService;
     private final StarbucksCrawler starbucksCrawler;
+    private final MegaCrawler megaCrawler;
+    private final PaikCrawler paikCrawler;
     private final BeverageRepository beverageRepository;
 
     @Autowired
-    public CrawlingService(StarbucksCrawler starbucksCrawler, BeverageRepository beverageRepository) {
+    public CrawlingService(WebDriverService webDriverService,
+                           StarbucksCrawler starbucksCrawler,
+                           MegaCrawler megaCrawler,
+                           PaikCrawler paikCrawler,
+                           BeverageRepository beverageRepository) {
+        this.webDriverService = webDriverService;
         this.starbucksCrawler = starbucksCrawler;
+        this.megaCrawler = megaCrawler;
+        this.paikCrawler = paikCrawler;
         this.beverageRepository = beverageRepository;
     }
 
+    @Transactional
     public void executeCrawling() {
+        WebDriver webDriver = webDriverService.createWebDriver();
+        try {
+            starbucksCrawler.setWebDriver(webDriver);
+            List<Beverage> starbucksData = starbucksCrawler.crawlBeverageList();
+            processAndSaveBeverages(starbucksData);
 
-        List<Beverage> starbucksData = starbucksCrawler.crawlBeverageList();
-        for (Beverage newBeverage : starbucksData) {
+            megaCrawler.setWebDriver(webDriver);
+            List<Beverage> megaData = megaCrawler.crawlBeverageList();
+            processAndSaveBeverages(megaData);
 
+            paikCrawler.setWebDriver(webDriver);
+            List<Beverage> paikData = paikCrawler.crawlBeverageList();
+            processAndSaveBeverages(paikData);
+
+        } finally {
+            webDriverService.quitWebDriver(webDriver);
+        }
+    }
+
+    private void processAndSaveBeverages(List<Beverage> beverages) {
+        for (Beverage newBeverage : beverages) {
             Optional<Beverage> existingBeverage =
                     beverageRepository.findByNameAndBrand(newBeverage.getName(), newBeverage.getBrand());
 
             if (existingBeverage.isPresent()) {
-                Beverage beverage = existingBeverage.get();
-
-                // 기존 데이터 업데이트
-                updateExistingBeverage(beverage, newBeverage);
-                beverageRepository.save(beverage);
+                updateExistingBeverage(existingBeverage.get(), newBeverage);
+                beverageRepository.save(existingBeverage.get());
             } else {
-
-                // 새 데이터 삽입
                 beverageRepository.save(newBeverage);
             }
         }
-
     }
 
     private void updateExistingBeverage(Beverage existingBeverage, Beverage newBeverage) {
