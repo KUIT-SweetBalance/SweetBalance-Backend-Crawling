@@ -115,7 +115,7 @@ public class PaikCrawler extends BaseCrawler {
 
             Beverage beverage = Beverage.builder()
                     .name(name)
-                    .brand("Paik")
+                    .brand("빽다방")
                     .imgUrl(imgUrl)
                     .category(beverageCategory)
                     .sugar(sugar)

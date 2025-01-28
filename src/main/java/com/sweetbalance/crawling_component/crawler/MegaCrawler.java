@@ -136,7 +136,7 @@ public class MegaCrawler extends BaseCrawler {
 
             Beverage beverage = Beverage.builder()
                     .name(name)
-                    .brand("Mega")
+                    .brand("메가커피")
                     .imgUrl(imgSrc)
                     .category(determineBeverageCategory(categoryName, name))
                     .calories(calories)

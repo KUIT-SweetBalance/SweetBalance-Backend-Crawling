@@ -102,7 +102,7 @@ public class StarbucksCrawler extends BaseCrawler {
 ;
             Beverage beverage = Beverage.builder()
                     .name(name)
-                    .brand("Starbucks")
+                    .brand("스타벅스")
                     .imgUrl(imgUrl)
                     .category(determineBeverageCategory(category, name))
                     .calories(calories)
