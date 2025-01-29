@@ -146,7 +146,7 @@ public class MegaCrawler extends BaseCrawler {
                     .status(Status.ACTIVE)
                     .build();
 
-            BeverageSize size = new BeverageSize(beverage, sizeType, volume);
+            BeverageSize size = BeverageSize.fromBeverageAndVolume(beverage, sizeType, volume);
             beverage.addSize(size);
 
             return beverage;

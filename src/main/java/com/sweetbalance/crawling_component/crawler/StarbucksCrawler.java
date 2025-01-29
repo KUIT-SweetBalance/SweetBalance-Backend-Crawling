@@ -125,30 +125,30 @@ public class StarbucksCrawler extends BaseCrawler {
     private void createBeverageSizes(Beverage beverage, int volume) {
         switch (volume) {
             case 22:
-                beverage.addSize(new BeverageSize(beverage, "SOLO", 22));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "SOLO", 22));
                 break;
             case 190:
-                beverage.addSize(new BeverageSize(beverage, "JUICE_190ML", 190));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "JUICE_190ML", 190));
                 break;
             case 207:
-                beverage.addSize(new BeverageSize(beverage, "TWO_SHOT", 207));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "TWO_SHOT", 207));
                 break;
             case 355:
-                beverage.addSize(new BeverageSize(beverage, "TALL", 355));
-                beverage.addSize(new BeverageSize(beverage, "GRANDE", 473));
-                beverage.addSize(new BeverageSize(beverage, "VENTI", 591));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "TALL", 355));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "GRANDE", 473));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "VENTI", 591));
                 break;
             case 473:
-                beverage.addSize(new BeverageSize(beverage, "GRANDE", 473));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "GRANDE", 473));
                 break;
             case 500:
-                beverage.addSize(new BeverageSize(beverage, "BOTTLE", 500));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "BOTTLE", 500));
                 break;
             case 591:
-                beverage.addSize(new BeverageSize(beverage, "JUICE_591ML", 591));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "JUICE_591ML", 591));
                 break;
             case 887:
-                beverage.addSize(new BeverageSize(beverage, "TRENTA", 887));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "TRENTA", 887));
                 break;
             default:
                 break;

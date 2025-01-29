@@ -125,7 +125,7 @@ public class PaikCrawler extends BaseCrawler {
                     .status(Status.ACTIVE)
                     .build();
 
-            BeverageSize beverageSize = new BeverageSize(beverage, sizeType, volume);
+            BeverageSize beverageSize = BeverageSize.fromBeverageAndVolume(beverage, sizeType, volume);
             beverage.addSize(beverageSize);
 
             return beverage;
