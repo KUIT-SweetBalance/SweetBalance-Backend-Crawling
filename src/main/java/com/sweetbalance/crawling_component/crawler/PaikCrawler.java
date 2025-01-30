@@ -73,23 +73,21 @@ public class PaikCrawler extends BaseCrawler {
             WebElement hoverElement = item.findElement(By.className("hover"));
 
             String sizeInfo;
-            String sizeType = "";;
+            String rawSizeStr = "";;
             int volume = 0;;
 
             try {
                 sizeInfo = hoverElement.findElement(By.className("menu_ingredient_basis")).getAttribute("textContent");
                 String[] sizeParts = sizeInfo.split(":");
                 if (sizeParts.length > 1) {
-                    sizeType = sizeParts[1].trim();
-                    volume = parseVolume(sizeType);
+                    rawSizeStr = sizeParts[1].trim();
+                    volume = parseVolume(rawSizeStr);
                 }
             } catch (org.openqa.selenium.NoSuchElementException e) {
 
                 if (name.endsWith("(HOT)")) {
-                    sizeType = "16oz";
                     volume = 473;
                 } else {
-                    sizeType = "24oz";
                     volume = 710;
                 }
             }
@@ -125,20 +123,42 @@ public class PaikCrawler extends BaseCrawler {
                     .status(Status.ACTIVE)
                     .build();
 
-            BeverageSize beverageSize = BeverageSize.fromBeverageAndVolume(beverage, sizeType, volume);
-            beverage.addSize(beverageSize);
-
+            createBeverageSizes(beverage, volume);
             return beverage;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private int parseVolume(String sizeType) {
+    private void createBeverageSizes(Beverage beverage, int volume) {
+        switch (volume) {
+            case 60:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(60ml)", 60));
+                break;
+            case 473:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(16oz)", 473));
+                break;
+            case 710:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(24oz)", 710));
+                break;
+            case 946:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(32oz)", 946));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private int parseVolume(String rawSizeStr) {
         try {
-            int oz = Integer.parseInt(sizeType.replaceAll("[^0-9]", ""));
-            return (int) Math.round(oz * 29.57353); // 온스(oz) -> ML 변환
+            if(rawSizeStr.endsWith("ml")) {
+                return Integer.parseInt(rawSizeStr.replaceAll("[^0-9]", ""));
+            }else{
+                int oz = Integer.parseInt(rawSizeStr.replaceAll("[^0-9]", ""));
+                return (int) Math.round(oz * 29.57353); // 온스(oz) -> ML 변환
+            }
         } catch (NumberFormatException e) {
             System.err.println("Error parsing volume: " + e.getMessage());
             return 0;
@@ -159,7 +179,7 @@ public class PaikCrawler extends BaseCrawler {
         } else if (category.contains("음료")) {
             return BeverageCategory.음료;
         } else if (category.contains("빽스치노")) {
-            return BeverageCategory.시그니처;
+            return BeverageCategory.시그니쳐;
         } else {
             return inferCategoryFromName(name);
         }

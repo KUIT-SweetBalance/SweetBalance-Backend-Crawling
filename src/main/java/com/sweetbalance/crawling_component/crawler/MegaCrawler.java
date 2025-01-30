@@ -118,9 +118,9 @@ public class MegaCrawler extends BaseCrawler {
             }
 
             String imgSrc = item.findElement(By.xpath(".//img")).getAttribute("src");
-            String sizeType = item.findElement(By.xpath(".//div[@class='cont_text']/div[@class='cont_text_inner'][1]")).getAttribute("textContent").trim();
+            String rawSizeStr = item.findElement(By.xpath(".//div[@class='cont_text']/div[@class='cont_text_inner'][1]")).getAttribute("textContent").trim();
 
-            int volume = parseVolume(sizeType);
+            int volume = parseVolume(rawSizeStr);
 
             String caloriesText = item.findElement(By.xpath(".//div[@class='cont_text']/div[@class='cont_text_inner'][2]")).getAttribute("textContent")
                     .replaceAll("1회 제공량", "");
@@ -146,13 +146,34 @@ public class MegaCrawler extends BaseCrawler {
                     .status(Status.ACTIVE)
                     .build();
 
-            BeverageSize size = BeverageSize.fromBeverageAndVolume(beverage, sizeType, volume);
-            beverage.addSize(size);
-
+            createBeverageSizes(beverage, volume);
             return beverage;
+
         } catch (Exception e) {
             System.err.println("Error extracting beverage info: " + e.getMessage());
             return null;
+        }
+    }
+
+    private void createBeverageSizes(Beverage beverage, int volume) {
+        switch (volume) {
+            case 59:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(2oz)", 59));
+                break;
+            case 148:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(5oz)", 148));
+                break;
+            case 591:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(20oz)", 591));
+                break;
+            case 710:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(24oz)", 710));
+                break;
+            case 946:
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(32oz)", 946));
+                break;
+            default:
+                break;
         }
     }
 

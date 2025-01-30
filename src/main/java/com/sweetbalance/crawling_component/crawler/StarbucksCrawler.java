@@ -5,11 +5,9 @@ import com.sweetbalance.crawling_component.entity.BeverageSize;
 import com.sweetbalance.crawling_component.enums.beverage.BeverageCategory;
 import com.sweetbalance.crawling_component.enums.common.Status;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -126,12 +124,13 @@ public class StarbucksCrawler extends BaseCrawler {
         switch (volume) {
             case 22:
                 beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "SOLO", 22));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "DOPPIO", 44));
                 break;
             case 190:
                 beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "JUICE_190ML", 190));
                 break;
             case 207:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "TWO_SHOT", 207));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "DOUBLE_SHOT", 207));
                 break;
             case 355:
                 beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "TALL", 355));
@@ -188,7 +187,7 @@ public class StarbucksCrawler extends BaseCrawler {
         } else if (category.contains("프라푸치노")|| category.contains("블렌디드") || category.contains("티") || category.contains("주스") ) {
             return BeverageCategory.음료;
         } else if (category.contains("리프레셔") || category.contains("피지오") || category.contains("제조")) {
-            return BeverageCategory.시그니처;
+            return BeverageCategory.시그니쳐;
         } else if (category.contains("프로모션")) {
             return BeverageCategory.기타;
         } else {
