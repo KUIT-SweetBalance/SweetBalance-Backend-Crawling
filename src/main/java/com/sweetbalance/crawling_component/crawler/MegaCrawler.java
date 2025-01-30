@@ -176,14 +176,21 @@ public class MegaCrawler extends BaseCrawler {
 
     private BeverageCategory determineBeverageCategory(String categoryName, String name) {
 
-        if (categoryName.contains("커피")) {
-            return BeverageCategory.에스프레소;
-        } else if (categoryName.contains("티")) {
-            return BeverageCategory.티;
-        } else if (categoryName.contains("에이드&주스")) {
-            return BeverageCategory.주스;
-        } else if (categoryName.contains("스무디&프라페")) {
+        if (categoryName.contains("커피") || categoryName.contains("디카페인")) {
+            return BeverageCategory.커피;
+        } else if (categoryName.contains("티") || categoryName.contains("에이드&주스")
+                || categoryName.contains("스무디&프라페") || categoryName.contains("음료")) {
+            return BeverageCategory.음료;
+        } else if (categoryName.contains("신상품")) {
             return BeverageCategory.기타;
+        }  else {
+            return inferCategoryFromName(name);
+        }
+    }
+
+    private BeverageCategory inferCategoryFromName(String name) {
+        if (name.contains("커피")) {
+            return BeverageCategory.커피;
         } else {
             return BeverageCategory.기타;
         }

@@ -155,31 +155,21 @@ public class PaikCrawler extends BaseCrawler {
 
     private BeverageCategory determineBeverageCategory(String category, String name) {
         if (category.contains("커피")) {
-            return BeverageCategory.에스프레소;
+            return BeverageCategory.커피;
+        } else if (category.contains("음료")) {
+            return BeverageCategory.음료;
+        } else if (category.contains("빽스치노")) {
+            return BeverageCategory.시그니처;
+        } else {
+            return inferCategoryFromName(name);
         }
+    }
 
-        if (category.contains("음료")) {
-            if (name.contains("주스") || name.contains("에이드")) {
-                return BeverageCategory.주스;
-            } else if (name.contains("티") || name.contains("차")) {
-                return BeverageCategory.티;
-            } else {
-                return BeverageCategory.기타;
-            }
-        }
-
-        if (category.contains("빽스치노")) {
+    private BeverageCategory inferCategoryFromName(String name) {
+        if (name.contains("커피")) {
+            return BeverageCategory.커피;
+        } else {
             return BeverageCategory.기타;
         }
-
-        if (name.contains("티") || name.contains("차")) {
-            return BeverageCategory.티;
-        }
-
-        if (name.contains("주스") || name.contains("에이드")) {
-            return BeverageCategory.주스;
-        }
-
-        return BeverageCategory.기타;
     }
 }

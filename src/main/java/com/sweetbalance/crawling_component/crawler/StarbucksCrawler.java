@@ -183,28 +183,24 @@ public class StarbucksCrawler extends BaseCrawler {
     }
 
     private BeverageCategory determineBeverageCategory(String category, String name) {
-        if (category.contains("콜드 브루")) {
-            return BeverageCategory.콜드브루;
-        } else if (category.contains("브루드")) {
-            return BeverageCategory.브루드커피;
-        } else if (category.contains("아메리카노")) {
-            return BeverageCategory.아메리카노;
-        } else if (category.contains("에스프레소")) {
-            return BeverageCategory.에스프레소;
-        } else if (category.contains("티")) {
-            return BeverageCategory.티;
-        } else if (category.contains("주스") || category.contains("블렌디드") || category.contains("리프레셔") || category.contains("피지오")) {
-            return BeverageCategory.주스;
+        if (category.contains("콜드 브루") || category.contains("브루드") || category.contains("에스프레소")) {
+            return BeverageCategory.커피;
+        } else if (category.contains("프라푸치노")|| category.contains("블렌디드") || category.contains("티") || category.contains("주스") ) {
+            return BeverageCategory.음료;
+        } else if (category.contains("리프레셔") || category.contains("피지오") || category.contains("제조")) {
+            return BeverageCategory.시그니처;
+        } else if (category.contains("프로모션")) {
+            return BeverageCategory.기타;
         } else {
             return inferCategoryFromName(name);
         }
     }
 
     private BeverageCategory inferCategoryFromName(String name) {
-        if (name.contains("콜드 브루")) {
-            return BeverageCategory.콜드브루;
+        if (name.contains("콜드 브루") || name.contains("라떼")) {
+            return BeverageCategory.커피;
         } else if (name.endsWith("티") || name.contains("말차")) {
-            return BeverageCategory.티;
+            return BeverageCategory.음료;
         } else {
             return BeverageCategory.기타;
         }
