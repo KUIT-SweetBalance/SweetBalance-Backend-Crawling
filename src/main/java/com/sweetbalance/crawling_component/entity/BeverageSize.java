@@ -23,6 +23,9 @@ public class BeverageSize {
     private String sizeType;
 
     @Column(nullable = false)
+    private String sizeTypeDetail;
+
+    @Column(nullable = false)
     private int volume;
 
     private double sugar;
@@ -33,6 +36,7 @@ public class BeverageSize {
 
     public static BeverageSize fromBeverageAndVolume(Beverage beverage,
                                                    String sizeType,
+                                                   String sizeTypeDetail,
                                                    int volume) {
         double sugar = beverage.getSugar() * volume / 100;
         double calories = beverage.getCalories() * volume / 100;
@@ -41,6 +45,7 @@ public class BeverageSize {
         return BeverageSize.builder()
                 .beverage(beverage)
                 .sizeType(sizeType)
+                .sizeTypeDetail(sizeTypeDetail)
                 .volume(volume)
                 .sugar(sugar)
                 .calories(calories)

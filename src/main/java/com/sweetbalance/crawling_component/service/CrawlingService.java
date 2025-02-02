@@ -92,7 +92,9 @@ public class CrawlingService {
     private void updateBeverageSizes(Beverage existingBeverage, List<BeverageSize> newSizes) {
         for (BeverageSize newSize : newSizes) {
             boolean exists = existingBeverage.getSizes().stream()
-                    .anyMatch(size -> size.getSizeType().equals(newSize.getSizeType()) && size.getVolume() == newSize.getVolume());
+                    .anyMatch(size -> size.getSizeType().equals(newSize.getSizeType())
+                                    && size.getSizeTypeDetail().equals(newSize.getSizeTypeDetail())
+                                    && size.getVolume() == newSize.getVolume());
             if (!exists) {
                 existingBeverage.addSize(newSize);
             }

@@ -158,19 +158,19 @@ public class MegaCrawler extends BaseCrawler {
     private void createBeverageSizes(Beverage beverage, int volume) {
         switch (volume) {
             case 59:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(2oz)", 59));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "2oz", 59));
                 break;
             case 148:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(5oz)", 148));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "5oz", 148));
                 break;
             case 591:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(20oz)", 591));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "20oz", 591));
                 break;
             case 710:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(24oz)", 710));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "24oz", 710));
                 break;
             case 946:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(32oz)", 946));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "32oz", 946));
                 break;
             default:
                 break;

@@ -135,16 +135,16 @@ public class PaikCrawler extends BaseCrawler {
     private void createBeverageSizes(Beverage beverage, int volume) {
         switch (volume) {
             case 60:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(60ml)", 60));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "60ml", 60));
                 break;
             case 473:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(16oz)", 473));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "16oz", 473));
                 break;
             case 710:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(24oz)", 710));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "24oz", 710));
                 break;
             case 946:
-                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "ONE SIZE(32oz)", 946));
+                beverage.addSize(BeverageSize.fromBeverageAndVolume(beverage, "one size", "32oz", 946));
                 break;
             default:
                 break;
