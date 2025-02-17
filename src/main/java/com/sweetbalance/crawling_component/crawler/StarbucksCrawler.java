@@ -187,7 +187,7 @@ public class StarbucksCrawler extends BaseCrawler {
         } else if (category.contains("프라푸치노")|| category.contains("블렌디드") || category.contains("티") || category.contains("주스") ) {
             return BeverageCategory.음료;
         } else if (category.contains("리프레셔") || category.contains("피지오") || category.contains("제조")) {
-            return BeverageCategory.시그니쳐;
+            return BeverageCategory.시그니처;
         } else if (category.contains("프로모션")) {
             return BeverageCategory.기타;
         } else {

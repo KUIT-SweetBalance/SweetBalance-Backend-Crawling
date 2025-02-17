@@ -179,7 +179,7 @@ public class PaikCrawler extends BaseCrawler {
         } else if (category.contains("음료")) {
             return BeverageCategory.음료;
         } else if (category.contains("빽스치노")) {
-            return BeverageCategory.시그니쳐;
+            return BeverageCategory.시그니처;
         } else {
             return inferCategoryFromName(name);
         }
