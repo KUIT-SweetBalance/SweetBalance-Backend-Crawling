@@ -1,4 +1,4 @@
-# 스윗밸런스 BE Repository
+# 스윗밸런스 BE Crawling Repository
 
 ## System Architecture
 
