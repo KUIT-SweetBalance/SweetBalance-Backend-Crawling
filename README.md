@@ -1,8 +1,9 @@
-# 스윗밸런스 BE Crawling Repository
+# 스윗밸런스 BE Repository
 
 ## System Architecture
 
-![백엔드 아키텍처 1차](https://github.com/user-attachments/assets/ec88417b-66d3-4743-a2ec-a9bef00f25c2)
+![백엔드 아키텍처 2차](https://github.com/user-attachments/assets/e08fc0b0-ac75-41a9-b3c5-b32eb1c3d363)
+
 
 ## API Documentation
 
@@ -10,7 +11,7 @@
 https://cheddar-nitrogen-fe5.notion.site/API-b0c426a8de234f9387d859c5d6a95e17?pvs=4
 
 **Swagger UI** 
-https://13.125.187.188.nip.io/swagger-ui.html
+https://api.sweetbalance.site/swagger-ui.html
 
 ## Github Repository
 
@@ -22,7 +23,7 @@ https://github.com/KUIT-SweetBalance/SweetBalance-Backend-Crawling
 
 ## Deployed
 
-https://13.125.187.188.nip.io/
+https://api.sweetbalance.site
 
 ## ERD
 
